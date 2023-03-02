@@ -1,3 +1,4 @@
 module.exports = {
-  port: 4000,
+  reactPort: 4000,
+  serverDomain: 'http://localhost:3000',
 }

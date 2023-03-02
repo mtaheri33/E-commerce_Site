@@ -9,7 +9,7 @@ let path = require('path'),
       filename: 'index.bundle.js'
     },
     devServer: {
-      port: constants.port,
+      port: constants.reactPort,
       historyApiFallback: true
     },
     plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
