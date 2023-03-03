@@ -7,10 +7,10 @@ const Home = function () {
       <div className='container text-center'>
         <div className='row'>
           <div className='col'>
-            Column
+            <a href='/signUp' className='link-primary fw-bold text-decoration-none'>Sign Up</a>
           </div>
           <div className='col'>
-            Column
+            <a href='/signIn' className='link-primary fw-bold text-decoration-none'>Sign In</a>
           </div>
         </div>
       </div>
