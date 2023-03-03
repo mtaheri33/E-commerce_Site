@@ -6,8 +6,8 @@ let initialState = {
 
 const reducer = function (state = initialState, action) {
   switch (action.type) {
-    case 'addUser':
-      return action.payload;
+    // case 'addUser':
+    //   return action.payload;
     default:
       return state;
   }
