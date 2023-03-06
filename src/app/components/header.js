@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const Header = function (props) {
-  const username = props.state.username;
+  const username = props.State.username;
   return (
     <header>
       <nav className='navbar navbar-expand-lg fixed-top bg-primary' data-bs-theme='dark'>
@@ -32,7 +32,7 @@ const Header = function (props) {
 
 const mapStateToProps = (state) => {
   return {
-    state: state.reducer
+    State: state.reducer
   }
 }
 

@@ -33,15 +33,36 @@ const User = mongoose.model('User', usersSchema);
 // The new document object is then returned.
 const addUser = async function (user) {
   await mongoose.connect(constants.databaseDomain);
+  let result;
   const userExists = await User.findOne({ username: user.username });
   if (userExists) {
-    return false;
+    result = false;
+  } else {
+    // The username does not alredy exist.
+    const userDocumentToSave = new User(user);
+    result = await userDocumentToSave.save();
   }
-  // The username does not alredy exist.
-  const userDocumentToSave = new User(user);
-  const userDocumentCreated = await userDocumentToSave.save();
   await mongoose.connection.close();
-  return userDocumentCreated;
+  return result;
 };
 
-module.exports = { addUser };
+// This takes in a user object with properties for username and password.  It checks if the
+// password from the user object is the correct password for the user.  If so, it returns the user
+// document from the database.  Otherwise, it returns false.
+const checkUser = async function (user) {
+  await mongoose.connect(constants.databaseDomain);
+  let result;
+  const userDocument = await User.findOne({ username: user.username });
+  // The format of the user object may be correct, but the username does not exist.  In this case,
+  // the value returned by the database will be null, and trying to access the password property
+  // will cause an error.  So, a check is performed on the document object, userDocument, first.
+  if (userDocument && (user.password === userDocument.password)) {
+    result = userDocument;
+  } else {
+    result = false;
+  }
+  await mongoose.connection.close();
+  return result;
+};
+
+module.exports = { addUser, checkUser };

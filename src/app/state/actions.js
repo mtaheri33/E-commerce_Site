@@ -1,7 +1,10 @@
-// This function sends a user to the reducer to update the state.
-// const addUserState = (user) => {
-//   return {
-//     type: 'addUser',
-//     payload: user,
-//   };
-// };
+// This takes in a user object with properties for the user's id, username, and cart.  It uses this
+// object to set the state.
+export const setState = (user) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'set state',
+      payload: user
+    });
+  };
+};
