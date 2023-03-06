@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Home = function () {
   return (
@@ -7,10 +8,10 @@ const Home = function () {
       <div className='container text-center'>
         <div className='row'>
           <div className='col'>
-            <a href='/signUp' className='link-primary fw-bold text-decoration-none'>Sign Up</a>
+            <NavLink className='link-primary fw-bold text-decoration-none' to='/signUp'>Sign Up</NavLink>
           </div>
           <div className='col'>
-            <a href='/signIn' className='link-primary fw-bold text-decoration-none'>Sign In</a>
+            <NavLink className='link-primary fw-bold text-decoration-none' to='/signIn'>Sign In</NavLink>
           </div>
         </div>
       </div>

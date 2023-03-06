@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Header = function (props) {
@@ -12,12 +13,12 @@ const Header = function (props) {
           </button>
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-              <a className='nav-link text-light fw-bold' href='/'>Home</a>
-              <a className='nav-link text-light fw-bold' href='/marketplace'>Marketplace</a>
-              <a className='nav-link text-light fw-bold' href='/cart'>Cart</a>
-              <a className='nav-link text-light fw-bold' href='/orders'>Orders</a>
-              <a className='nav-link text-light fw-bold' href='/products'>Products</a>
-              <a className='nav-link text-light fw-bold' href='/ratings'>Ratings</a>
+              <NavLink className='nav-link text-light fw-bold' to='/'>Home</NavLink>
+              <NavLink className='nav-link text-light fw-bold' to='/marketplace'>Marketplace</NavLink>
+              <NavLink className='nav-link text-light fw-bold' to='/cart'>Cart</NavLink>
+              <NavLink className='nav-link text-light fw-bold' to='/orders'>Orders</NavLink>
+              <NavLink className='nav-link text-light fw-bold' to='/products'>Products</NavLink>
+              <NavLink className='nav-link text-light fw-bold' to='/ratings'>Ratings</NavLink>
             </div>
             <div className='ms-auto'>
               <span className='text-light pe-3'>{username}</span>
