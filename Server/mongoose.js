@@ -65,4 +65,56 @@ const checkUser = async function (user) {
   return result;
 };
 
-module.exports = { addUser, checkUser };
+// The structure for a product document is:
+// String name,
+// Decimal128 price,
+// Number quantity,
+// String description,
+// String createdBy,
+// {String user id: Number rating, ...} ratings,
+const productsSchema = new mongoose.Schema({
+  name: String,
+  price: mongoose.Decimal128,
+  quantity: Number,
+  description: String,
+  createdBy: String,
+  ratings: { type: Object, default: {} },
+}, { minimize: false });
+const Product = mongoose.model('Product', productsSchema);
+
+// This takes in a product object with properties for name, price, quantity, description, and
+// createdBy.  It creates and then saves a new Product document in the database using the product
+// object.  It also updates the related user document to add the product.  The new product document
+// object is then returned.
+const addProduct = async function (product) {
+  await mongoose.connect(constants.databaseDomain);
+  // This creates and saves the new product.
+  const productDocumentToSave = new Product(product);
+  result = await productDocumentToSave.save();
+  // This adds the product to the user document.
+  const userDocument = await User.findOne({ _id: product.createdBy });
+  userDocument.products.push(result._id.toString());
+  await userDocument.save();
+  // This closes the database connection and returns the new product document.
+  await mongoose.connection.close();
+  return result;
+};
+
+// This takes in a user id.  It finds all of the product documents for that user and returns them
+// in an array.
+const getProducts = async function (userId) {
+  await mongoose.connect(constants.databaseDomain);
+  // This gets the product ids from the user document.
+  const userDocument = await User.findOne({ _id: userId });
+  const products = userDocument.products;
+  // This iterates through the product ids and finds the product documents from the database.
+  // For each one, it adds it to the result array.
+  const result = [];
+  for (let productId of products) {
+    const productDocument = await Product.findOne({ _id: productId });
+    result.push(productDocument);
+  }
+  return result;
+}
+
+module.exports = { addUser, checkUser, addProduct, getProducts };

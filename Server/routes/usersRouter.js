@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addUser, checkUser } = require('../mongoose');
+const { addUser, checkUser, getProducts } = require('../mongoose');
 
 // req.body should be an object with properties for username and password.  This takes the object
 // from the request and runs the addUser function to create the new user in the database.  If the
@@ -35,6 +35,19 @@ router.post('/signIn', (req, res) => {
       } else {
         res.status(200).send(data);
       }
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
+// req.query should have a parameter and value for userId.  This takes the user id from the request
+// and runs the getUser function to get the user document from the database.  If it is successful,
+// this sends back the user object.  Otherwise, it sends back the status bad request.
+router.get('/products', (req, res) => {
+  getProducts(req.query.userId)
+    .then((data) => {
+      res.status(200).send(data);
     })
     .catch(() => {
       res.status(400).send();

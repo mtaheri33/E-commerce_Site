@@ -9,6 +9,9 @@ app.use(cors());
 const usersRouter = require('./routes/usersRouter')
 app.use('/users', usersRouter);
 
+const productsRouter = require('./routes/productsRouter')
+app.use('/products', productsRouter);
+
 app.use((req, res) => {
   res.send('Sorry, the route does not exist.');
 });
