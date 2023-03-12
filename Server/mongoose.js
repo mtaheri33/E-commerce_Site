@@ -6,22 +6,14 @@ mongoose.set('strictQuery', false);
 // String username,
 // String password,
 // {String product id: Number quantity to order, ...} cart,
-// {String order number: {} order details, ...} orders
-//   {
-//     products: {String product id: Number quantity ordered, ...},
-//     address: {name: String name, street: String street, city: String city, state: String state,
-//               zipCode: String zip code},
-//     card: {name: String name, number: String number, expirationDate: String expiration date,
-//            code: Number code},
-//     date: String date ordered,
-//   } order details,
+// Array<String order id> orders,
 // Array<String product id> products,
 // {String product id: Number rating, ...} ratings,
 const usersSchema = new mongoose.Schema({
   username: String,
   password: String,
   cart: { type: Object, default: {} },
-  orders: { type: Object, default: {} },
+  orders: [String],
   products: [String],
   ratings: { type: Object, default: {} },
 }, { minimize: false });
@@ -138,3 +130,13 @@ const getUser = async function (userId) {
 };
 
 module.exports = { addUser, checkUser, addProduct, getProducts, getProduct, getUser };
+
+// {String order number: {} order details, ...} orders
+//   {
+//     products: {String product id: Number quantity ordered, ...},
+//     address: {name: String name, street: String street, city: String city, state: String state,
+//               zipCode: String zip code},
+//     card: {name: String name, number: String number, expirationDate: String expiration date,
+//            code: Number code},
+//     date: String date ordered,
+//   } order details,
