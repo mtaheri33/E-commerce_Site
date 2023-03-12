@@ -129,7 +129,16 @@ const getUser = async function (userId) {
   return userDocument;
 };
 
-module.exports = { addUser, checkUser, addProduct, getUserProducts, getProduct, getUser };
+// This finds and returns all of the products documents in the database.
+const getProducts = async function () {
+  await mongoose.connect(constants.databaseDomain);
+  const productDocuments = await Product.find().exec();
+  // This closes the database connection and returns the product documents.
+  await mongoose.connection.close();
+  return productDocuments;
+};
+
+module.exports = { addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts };
 
 
 // Ordered by: user id
