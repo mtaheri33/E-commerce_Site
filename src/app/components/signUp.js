@@ -48,7 +48,7 @@ const SignUp = function () {
               </div>
               <div className='mb-3'>
                 <label htmlFor='signUpPassword' className='form-label'>Password</label>
-                <input type='text' className='form-control' id='signUpPassword' ref={password}></input>
+                <input type='password' className='form-control' id='signUpPassword' ref={password}></input>
               </div>
               <button className='btn btn-primary'>Submit</button>
             </form>

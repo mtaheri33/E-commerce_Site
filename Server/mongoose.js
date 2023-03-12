@@ -94,7 +94,7 @@ const addProduct = async function (product) {
 
 // This takes in a user id.  It finds all of the product documents for that user and returns them
 // in an array.
-const getProducts = async function (userId) {
+const getUserProducts = async function (userId) {
   await mongoose.connect(constants.databaseDomain);
   // This gets the product ids from the user document.
   const userDocument = await User.findOne({ _id: userId });
@@ -129,7 +129,14 @@ const getUser = async function (userId) {
   return userDocument;
 };
 
-module.exports = { addUser, checkUser, addProduct, getProducts, getProduct, getUser };
+module.exports = { addUser, checkUser, addProduct, getUserProducts, getProduct, getUser };
+
+
+// Ordered by: user id
+//   products: {product id: quantity ordered},
+//   address: {name, street, city, state, zip},
+//   card: {name, number, expiration date MM/YY, code},
+//   date: date MM/DD/YYYY
 
 // {String order number: {} order details, ...} orders
 //   {

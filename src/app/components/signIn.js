@@ -59,7 +59,7 @@ const SignIn = function (props) {
               </div>
               <div className='mb-3'>
                 <label htmlFor='signInPassword' className='form-label'>Password</label>
-                <input type='text' className='form-control' id='signInPassword' ref={password}></input>
+                <input type='password' className='form-control' id='signInPassword' ref={password}></input>
               </div>
               <button className='btn btn-primary'>Sign in</button>
             </form>
