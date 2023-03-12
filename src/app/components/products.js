@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 const axios = require('axios');
 const constants = require('../../../constants');
@@ -22,12 +22,13 @@ const Products = function (props) {
         // result.data is an array of objects.  Each object is a product document.  The map method
         // iterates through the array to create the html element for the product.
         const rowElements = result.data.map((product) => {
+          const link = '/products/' + product._id.toString();
           return (
             <div className='row' key={product._id.toString()}>
               <div className='col'>
-                {product.name}
+                <NavLink to={link}>{product.name}</NavLink>
               </div>
-            </div>
+            </div >
           );
         });
         // After the map method, rowElements is an array of div elements.  Each element is a row
@@ -70,9 +71,7 @@ const Products = function (props) {
         {products}
       </div>
 
-      <div id='productsBreak'></div>
-
-      <div className='container'>
+      <div className='container mt-4'>
         <div className='row'>
           <h2 className='text text-primary fw-bold'>Add Product</h2>
         </div>

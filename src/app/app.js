@@ -11,6 +11,7 @@ import Cart from './components/cart';
 import Checkout from './components/checkout';
 import Orders from './components/orders';
 import Products from './components/products';
+import Product from './components/product';
 import Ratings from './components/ratings';
 import NotFound from './components/notFound';
 
@@ -32,6 +33,7 @@ class App extends Component {
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/products' element={<Products />} />
+          <Route path='/products/:productId' element={<Product />} />
           <Route path='/ratings' element={<Ratings />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

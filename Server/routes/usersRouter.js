@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addUser, checkUser, getProducts } = require('../mongoose');
+const { addUser, checkUser, getProducts, getUser } = require('../mongoose');
 
 // req.body should be an object with properties for username and password.  This takes the object
 // from the request and runs the addUser function to create the new user in the database.  If the
@@ -46,6 +46,17 @@ router.post('/signIn', (req, res) => {
 // this sends back the user object.  Otherwise, it sends back the status bad request.
 router.get('/products', (req, res) => {
   getProducts(req.query.userId)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
+// This is used to get the user document from the database with the user id from the route.
+router.get('/:userId', (req, res) => {
+  getUser(req.params.userId)
     .then((data) => {
       res.status(200).send(data);
     })

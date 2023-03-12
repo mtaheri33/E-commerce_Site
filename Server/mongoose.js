@@ -114,7 +114,27 @@ const getProducts = async function (userId) {
     const productDocument = await Product.findOne({ _id: productId });
     result.push(productDocument);
   }
+  // This closes the database connection and returns the product documents.
+  await mongoose.connection.close();
   return result;
 }
 
-module.exports = { addUser, checkUser, addProduct, getProducts };
+// This takes in a product id.  It finds and then returns the related product document.
+const getProduct = async function (productId) {
+  await mongoose.connect(constants.databaseDomain);
+  const productDocument = await Product.findById(productId).exec();
+  // This closes the database connection and returns the product document.
+  await mongoose.connection.close();
+  return productDocument;
+};
+
+// This takes in a user id.  It finds and then returns the related user document.
+const getUser = async function (userId) {
+  await mongoose.connect(constants.databaseDomain);
+  const userDocument = await User.findById(userId).exec();
+  // This closes the database connection and returns the user document.
+  await mongoose.connection.close();
+  return userDocument;
+};
+
+module.exports = { addUser, checkUser, addProduct, getProducts, getProduct, getUser };

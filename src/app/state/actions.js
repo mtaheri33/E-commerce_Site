@@ -8,3 +8,14 @@ export const setState = (user) => {
     });
   };
 };
+
+// This takes in an object with a property for productId: quantity to order.  It adds this to
+// the cart state.
+export const addToCartState = (product) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'add to cart',
+      payload: product
+    });
+  };
+};
