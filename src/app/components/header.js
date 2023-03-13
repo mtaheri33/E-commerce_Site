@@ -18,7 +18,6 @@ const Header = function (props) {
               <NavLink className='nav-link text-light fw-bold' to='/cart'>Cart</NavLink>
               <NavLink className='nav-link text-light fw-bold' to='/orders'>Orders</NavLink>
               <NavLink className='nav-link text-light fw-bold' to='/products'>Products</NavLink>
-              <NavLink className='nav-link text-light fw-bold' to='/ratings'>Ratings</NavLink>
             </div>
             <div className='ms-auto'>
               <span className='text-light pe-3'>{username}</span>
