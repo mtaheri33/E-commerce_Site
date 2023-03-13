@@ -5,14 +5,15 @@ mongoose.set('strictQuery', false);
 // The structure for a user document is:
 // String username,
 // String password,
-// {String product id: Number quantity to order, ...} cart,
+// Array<Object product details> cart
+//   {String product id, String product name, Number quantity to order, Number total price} product details,
 // Array<String order id> orders,
 // Array<String product id> products,
 // {String product id: Number rating, ...} ratings,
 const usersSchema = new mongoose.Schema({
   username: String,
   password: String,
-  cart: { type: Object, default: {} },
+  cart: [Object],
   orders: [String],
   products: [String],
   ratings: { type: Object, default: {} },
@@ -66,7 +67,7 @@ const checkUser = async function (user) {
 // {String user id: Number rating, ...} ratings,
 const productsSchema = new mongoose.Schema({
   name: String,
-  price: mongoose.Decimal128,
+  price: Number,
   quantity: Number,
   description: String,
   createdBy: String,
@@ -138,14 +139,28 @@ const getProducts = async function () {
   return productDocuments;
 };
 
-module.exports = { addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts };
+// This takes in a cart array and user id.  It saves the cart for the user in the database and
+// returns true.
+const saveCart = async function (cart, userId) {
+  await mongoose.connect(constants.databaseDomain);
+  const userDocument = await User.findById(userId).exec();
+  userDocument.cart = cart;
+  await userDocument.save();
+  await mongoose.connection.close();
+  return true;
+};
+
+module.exports = {
+  addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart
+};
 
 
-// Ordered by: user id
-//   products: {product id: quantity ordered},
-//   address: {name, street, city, state, zip},
-//   card: {name, number, expiration date MM/YY, code},
-//   date: date MM/DD/YYYY
+// Orders
+//   Ordered by: user id
+//   Products: [{product id, product name, quantity ordered, total price}]
+//   Address: {name, street, city, state, zip}
+//   Card: {name, number, expiration date MM/YY, code}
+//   Date: date MM/DD/YYYY
 
 // {String order number: {} order details, ...} orders
 //   {

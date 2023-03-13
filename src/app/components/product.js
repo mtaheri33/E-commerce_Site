@@ -36,7 +36,7 @@ const Product = function (props) {
         // This stores data in the product data object.
         productData = {
           name: result.data.name,
-          price: result.data.price['$numberDecimal'],
+          price: result.data.price,
           quantity: result.data.quantity,
           description: result.data.description,
           rating: avgRatings,
@@ -87,10 +87,20 @@ const Product = function (props) {
   // the product id and quantity to order to the reducer to update the cart in the state.
   const addToCart = function (event) {
     event.preventDefault();
-    const product = {};
-    product[productId] = Number(quantityToOrder.current.value);
-    props.addToCartState(product);
-    navigate('/cart');
+    // This finds the unit price of the product in order to calculate the total price.  It then
+    // creates the cart object to add to the cart state.
+    axios.get(constants.serverDomain + `/products/${productId}`)
+      .then((result) => {
+        const productDetails = {
+          productId: productId,
+          productName: result.data.name,
+          quantityToOrder: Number(quantityToOrder.current.value),
+          totalPrice: Number(quantityToOrder.current.value) * result.data.price,
+        };
+        props.addToCartState(productDetails);
+        navigate('/cart');
+      })
+      .catch(() => { });
   };
 
   return (

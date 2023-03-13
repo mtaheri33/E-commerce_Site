@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addUser, checkUser, getUserProducts, getUser } = require('../mongoose');
+const { addUser, checkUser, getUserProducts, getUser, saveCart } = require('../mongoose');
 
 // req.body should be an object with properties for username and password.  This takes the object
 // from the request and runs the addUser function to create the new user in the database.  If the
@@ -60,6 +60,20 @@ router.get('/:userId', (req, res) => {
   getUser(req.params.userId)
     .then((data) => {
       res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
+// req.body should be an object with a property for cart that equals a cart array.
+// This runs the saveCart function to save the passed in cart in the database for the user document
+// with the given user id.  It then sends back the status created.  If an error occurs, it sends
+// back the status bad request.
+router.post('/cart/:userId', (req, res) => {
+  saveCart(req.body.cart, req.params.userId)
+    .then(() => {
+      res.status(201).send();
     })
     .catch(() => {
       res.status(400).send();

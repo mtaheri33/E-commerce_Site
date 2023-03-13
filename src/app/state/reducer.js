@@ -11,11 +11,9 @@ const reducer = function (state = initialState, action) {
       // entire object can be used to update the state.
       return action.payload;
     case 'add to cart':
-      const newState = { ...state, cart: { ...state.cart } };
-      // The payload is an object with a property for productId: quantity to order.
-      const productId = Object.keys(action.payload)[0];
-      const quantityToOrder = action.payload[productId];
-      newState.cart[productId] = quantityToOrder;
+      const newState = { ...state, cart: [...state.cart] };
+      // The payload is an object of product details.
+      newState.cart.push(action.payload);
       return newState;
     default:
       return state;
