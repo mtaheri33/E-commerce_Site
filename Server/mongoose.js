@@ -170,25 +170,47 @@ const rateProduct = async function (rating, userId, productId) {
   return true;
 };
 
-module.exports = {
-  addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart,
-  rateProduct
+// The structure for an order document is:
+// String orderedBy,
+// Array<Object product details> products
+//   {String product id, String product name, Number quantity to order, Number total price} product details,
+// String address,
+// String card,
+const ordersSchema = new mongoose.Schema({
+  orderedBy: String,
+  products: [Object],
+  address: String,
+  card: String,
+});
+const Order = mongoose.model('Order', ordersSchema);
+
+// This takes in an order object with properties for orderedBy, products, address, and card.  It
+// creates and then saves a new Order document in the database using the order object.  It then
+// uses the id of the newly created order and saves it in the user document of the user who sent
+// the order while also clearing the saved cart of the user.  It also updates the quantities of the
+// products.  The new order document object is then returned.
+const addOrder = async function (order) {
+  await mongoose.connect(constants.databaseDomain);
+  // This creates and saves the new order.
+  let result;
+  const orderDocument = new Order(order);
+  result = await orderDocument.save();
+  // This saves the order id of the new order and clears the saved cart in the user document.
+  const userDocument = await User.findById(order.orderedBy).exec();
+  userDocument.orders.push(result._id.toString());
+  userDocument.cart = [];
+  await userDocument.save();
+  // This updates the quantities of the products that were ordered.
+  for (let product of order.products) {
+    const productDocument = await Product.findById(product.productId).exec();
+    productDocument.quantity -= product.quantityToOrder;
+    await productDocument.save();
+  }
+  await mongoose.connection.close();
+  return result;
 };
 
-
-// Orders
-//   Ordered by: user id
-//   Products: [{product id, product name, quantity ordered, total price}]
-//   Address: {name, street, city, state, zip}
-//   Card: {name, number, expiration date MM/YY, code}
-//   Date: date MM/DD/YYYY
-
-// {String order number: {} order details, ...} orders
-//   {
-//     products: {String product id: Number quantity ordered, ...},
-//     address: {name: String name, street: String street, city: String city, state: String state,
-//               zipCode: String zip code},
-//     card: {name: String name, number: String number, expirationDate: String expiration date,
-//            code: Number code},
-//     date: String date ordered,
-//   } order details,
+module.exports = {
+  addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart,
+  rateProduct, addOrder
+};

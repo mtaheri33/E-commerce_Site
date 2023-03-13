@@ -19,3 +19,12 @@ export const addToCartState = (product) => {
     });
   };
 };
+
+// This clears the cart state.
+export const clearCart = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'clear cart'
+    });
+  };
+};

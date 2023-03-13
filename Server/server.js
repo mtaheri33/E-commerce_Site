@@ -12,6 +12,9 @@ app.use('/users', usersRouter);
 const productsRouter = require('./routes/productsRouter')
 app.use('/products', productsRouter);
 
+const ordersRouter = require('./routes/ordersRouter')
+app.use('/orders', ordersRouter);
+
 app.use((req, res) => {
   res.send('Sorry, the route does not exist.');
 });
