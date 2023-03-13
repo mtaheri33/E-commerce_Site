@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addProduct, getProduct, getProducts } = require('../mongoose');
+const { addProduct, getProduct, getProducts, rateProduct } = require('../mongoose');
 
 // req.body should be an object with properties for name, price, quantity, description, and
 // createdBy.  This takes the object from the request and runs the addProduct function to create
@@ -36,6 +36,20 @@ router.get('/', (req, res) => {
   getProducts()
     .then((data) => {
       res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
+// This is used to rate the product document from the database with the product id from the route.
+// In addition, it saves the product and rating given in the user document.
+// If it is successful, it sends back the product document.  Otherwise, it sends back the status
+// bad request.
+router.get('/:productId/:userId/:rating', (req, res) => {
+  rateProduct(Number(req.params.rating), req.params.userId, req.params.productId)
+    .then(() => {
+      res.status(200).send();
     })
     .catch(() => {
       res.status(400).send();

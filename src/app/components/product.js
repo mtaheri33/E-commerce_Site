@@ -9,11 +9,13 @@ const constants = require('../../../constants');
 const Product = function (props) {
   const params = useParams();
   let productId = params['productId'];
+  const userId = props.State.userId;
   // This is a temporary state variable that is used to store the html elements for the product and
   // an object to store the data on the product.
   const [product, setProduct] = useState(props.State.product);
   let productData;
   const quantityToOrder = createRef();
+  const rating = createRef();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,6 +105,17 @@ const Product = function (props) {
       .catch(() => { });
   };
 
+  // This handles the form to rate a product.  It uses the product id, user id, and rating selected
+  // in a GET request to the server.  The product and rating will be stored under the user, and the
+  // user and rating will be stored under the product.
+  const rateProduct = function (event) {
+    event.preventDefault();
+    axios.get(
+      constants.serverDomain + `/products/${productId}/${userId}/${rating.current.value}`
+    )
+      .catch(() => { });
+  };
+
   return (
     <>
       {product}
@@ -116,6 +129,26 @@ const Product = function (props) {
                 <input type='number' className='form-control' id='quantityToOrder' ref={quantityToOrder}></input>
               </div>
               <button className='btn btn-primary'>Add to Cart</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div className='container mt-4'>
+        <div className='row'>
+          <div className='col-5'>
+            <form onSubmit={rateProduct}>
+              <div className='mb-3'>
+                <label htmlFor='ratingDropdown'>Rate Product:</label>
+                <select className='form-select' id='ratingDropdown' ref={rating}>
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                </select>
+              </div>
+              <button className='btn btn-primary'>Rate</button>
             </form>
           </div>
         </div>

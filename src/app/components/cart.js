@@ -26,7 +26,7 @@ const Cart = function (props) {
   // This takes the current cart state and saves it in the user document in the database for the
   // logged in user.
   const saveCart = function (event) {
-    event.preventDefault;
+    event.preventDefault();
     const headers = { headers: { 'content-type': 'application/json' } };
     let data = JSON.stringify({ cart: cart });
     axios.post(constants.serverDomain + `/users/cart/${userId}`, data, headers)

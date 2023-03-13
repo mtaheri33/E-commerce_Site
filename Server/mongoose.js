@@ -150,8 +150,29 @@ const saveCart = async function (cart, userId) {
   return true;
 };
 
+// This takes in a rating value, user id, and product id.  It saves the rating in the user and
+// product documents then returns true.
+const rateProduct = async function (rating, userId, productId) {
+  await mongoose.connect(constants.databaseDomain);
+  const userDocument = await User.findById(userId).exec();
+  // This creates new ratings objects with all of the old ratings.  It then adds the rating and
+  // sets the ratings properties to the new objects.
+  const newUserRatings = { ...userDocument.ratings };
+  newUserRatings[productId] = rating;
+  userDocument.ratings = newUserRatings;
+  await userDocument.save();
+  const productDocument = await Product.findById(productId).exec();
+  const newProductRatings = { ...productDocument.ratings };
+  newProductRatings[userId] = rating;
+  productDocument.ratings = newProductRatings;
+  await productDocument.save();
+  await mongoose.connection.close();
+  return true;
+};
+
 module.exports = {
-  addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart
+  addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart,
+  rateProduct
 };
 
 
