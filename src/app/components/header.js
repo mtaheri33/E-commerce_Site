@@ -1,9 +1,23 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { setState } from '../state/actions';
 
 const Header = function (props) {
   const username = props.State.username;
+  const navigate = useNavigate();
+
+  // This sets all of the states to null when a user signs out.
+  const signOut = function (event) {
+    event.preventDefault();
+    props.setState({
+      userId: null,
+      username: null,
+      cart: null,
+    });
+    navigate('/');
+  };
+
   return (
     <header>
       <nav className='navbar navbar-expand-lg fixed-top bg-primary' data-bs-theme='dark'>
@@ -21,7 +35,7 @@ const Header = function (props) {
             </div>
             <div className='ms-auto'>
               <span className='text-light pe-3'>{username}</span>
-              <button type='button' className='btn btn-light'>Sign out</button>
+              <button type='button' className='btn btn-light' onClick={signOut}>Sign out</button>
             </div>
           </div>
         </div>
@@ -30,10 +44,18 @@ const Header = function (props) {
   );
 };
 
+const mapDispatchToStore = (dispatch) => {
+  return {
+    setState: (user) => {
+      dispatch(setState(user))
+    }
+  };
+};
+
 const mapStateToProps = (state) => {
   return {
     State: state.reducer
   }
 }
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, mapDispatchToStore)(Header);
