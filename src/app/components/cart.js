@@ -6,7 +6,7 @@ const constants = require('../../../constants');
 
 const Cart = function (props) {
   const userId = props.State.userId;
-  const cart = props.State.cart;
+  const cart = props.State.cart ? props.State.cart : [];
   // This is a temporary state variable that is used to store the html elements for the products in
   // the cart.
   const [products, setProducts] = useState(props.State.products);
