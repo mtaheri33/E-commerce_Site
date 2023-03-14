@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addUser, checkUser, getUserProducts, getUser, saveCart } = require('../mongoose');
+const { addUser, checkUser, getUserProducts, getUser, saveCart, getUserOrders } = require('../mongoose');
 
 // req.body should be an object with properties for username and password.  This takes the object
 // from the request and runs the addUser function to create the new user in the database.  If the
@@ -47,6 +47,20 @@ router.post('/signIn', (req, res) => {
 // documents.  Otherwise, it sends back the status bad request.
 router.get('/products', (req, res) => {
   getUserProducts(req.query.userId)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
+// req.query should have a parameter and value for userId.  This takes the user id from the request
+// and runs the getUserOrders function to get the order documents of the orders the user
+// has in the database.  If it is successful, this sends back an array of the order
+// documents.  Otherwise, it sends back the status bad request.
+router.get('/orders', (req, res) => {
+  getUserOrders(req.query.userId)
     .then((data) => {
       res.status(200).send(data);
     })

@@ -219,7 +219,26 @@ const getOrder = async function (orderId) {
   return orderDocument;
 };
 
+// This takes in a user id.  It finds all of the order documents for that user and returns them
+// in an array.
+const getUserOrders = async function (userId) {
+  await mongoose.connect(constants.databaseDomain);
+  // This gets the orders ids from the user document.
+  const userDocument = await User.findById(userId).exec();
+  const orders = userDocument.orders;
+  // This iterates through the order ids and finds the order documents from the database.
+  // For each one, it adds it to the result array.
+  const result = [];
+  for (let orderId of orders) {
+    const orderDocument = await Order.findById(orderId).exec();
+    result.push(orderDocument);
+  }
+  // This closes the database connection and returns the order documents.
+  await mongoose.connection.close();
+  return result;
+};
+
 module.exports = {
   addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart,
-  rateProduct, addOrder, getOrder
+  rateProduct, addOrder, getOrder, getUserOrders
 };

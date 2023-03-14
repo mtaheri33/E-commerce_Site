@@ -32,7 +32,7 @@ class App extends Component {
           <Route path='/cart' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/orders' element={<Orders />} />
-          <Route path='/order/:orderId' element={<Order />} />
+          <Route path='/orders/:orderId' element={<Order />} />
           <Route path='/products' element={<Products />} />
           <Route path='/products/:productId' element={<Product />} />
           <Route path='*' element={<NotFound />} />
