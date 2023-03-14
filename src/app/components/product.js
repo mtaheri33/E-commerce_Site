@@ -96,7 +96,7 @@ const Product = function (props) {
         const productDetails = {
           productId: productId,
           productName: result.data.name,
-          quantityToOrder: Number(quantityToOrder.current.value),
+          orderQuantity: Number(quantityToOrder.current.value),
           totalPrice: Number(quantityToOrder.current.value) * result.data.price,
         };
         props.addToCartState(productDetails);

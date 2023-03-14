@@ -203,14 +203,23 @@ const addOrder = async function (order) {
   // This updates the quantities of the products that were ordered.
   for (let product of order.products) {
     const productDocument = await Product.findById(product.productId).exec();
-    productDocument.quantity -= product.quantityToOrder;
+    productDocument.quantity -= product.orderQuantity;
     await productDocument.save();
   }
   await mongoose.connection.close();
   return result;
 };
 
+// This takes in an order id.  It finds and then returns the related order document.
+const getOrder = async function (orderId) {
+  await mongoose.connect(constants.databaseDomain);
+  const orderDocument = await Order.findById(orderId).exec();
+  // This closes the database connection and returns the order document.
+  await mongoose.connection.close();
+  return orderDocument;
+};
+
 module.exports = {
   addUser, checkUser, addProduct, getUserProducts, getProduct, getUser, getProducts, saveCart,
-  rateProduct, addOrder
+  rateProduct, addOrder, getOrder
 };

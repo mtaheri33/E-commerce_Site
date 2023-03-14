@@ -30,7 +30,7 @@ const Checkout = function (props) {
             {product.productName}
           </div>
           <div className='col'>
-            {product.quantityToOrder}
+            {product.orderQuantity}
           </div>
         </div >
       );
