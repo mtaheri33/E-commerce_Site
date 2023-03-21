@@ -1,6 +1,7 @@
 import React, { createRef, useEffect, useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { addNotificationState, incrementNotificationsAmount } from '../state/actions';
 const axios = require('axios');
 const constants = require('../../../constants');
 
@@ -54,8 +55,13 @@ const Products = function (props) {
     });
     const headers = { headers: { 'content-type': 'application/json' } };
     axios.post(constants.serverDomain + '/products', data, headers)
-      .then(() => {
+      .then((result) => {
         // The request was successful, and the product was created.
+        props.addNotificationState({
+          value: 'You successfully added a product',
+          link: `/products/${result.data._id.toString()}`,
+        });
+        props.incrementNotificationsAmount();
         navigate('/products');
       })
       .catch(() => {
@@ -109,4 +115,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Products);
+const mapDispatchToStore = (dispatch) => {
+  return {
+    addNotificationState: (notification) => {
+      dispatch(addNotificationState(notification))
+    },
+    incrementNotificationsAmount: () => {
+      dispatch(incrementNotificationsAmount())
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToStore)(Products);

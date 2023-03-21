@@ -2,6 +2,8 @@ let initialState = {
   userId: null,
   username: null,
   cart: null,
+  notifications: null,
+  notificationsAmount: null,
 };
 
 const reducer = function (state = initialState, action) {
@@ -19,6 +21,15 @@ const reducer = function (state = initialState, action) {
       const newStateClearCart = { ...state, cart: [...state.cart] };
       newStateClearCart.cart.splice(0, newStateClearCart.cart.length);
       return newStateClearCart;
+    case 'add notification':
+      const newStateAddNotification = { ...state, notifications: [...state.notifications] };
+      // The payload is an object of notification details.
+      newStateAddNotification.notifications.push(action.payload);
+      return newStateAddNotification;
+    case 'increment notifications amount':
+      return { ...state, notificationsAmount: state.notificationsAmount + 1 };
+    case 'reset notifications amount':
+      return { ...state, notificationsAmount: 0 };
     default:
       return state;
   }

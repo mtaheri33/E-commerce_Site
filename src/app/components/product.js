@@ -2,7 +2,7 @@ import React, { createRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addToCartState } from '../state/actions';
+import { addToCartState, addNotificationState, incrementNotificationsAmount } from '../state/actions';
 const axios = require('axios');
 const constants = require('../../../constants');
 
@@ -100,6 +100,11 @@ const Product = function (props) {
           totalPrice: Number(quantityToOrder.current.value) * result.data.price,
         };
         props.addToCartState(productDetails);
+        props.addNotificationState({
+          value: `You added ${result.data.name} to your cart`,
+          link: '/cart',
+        });
+        props.incrementNotificationsAmount();
         navigate('/cart');
       })
       .catch(() => { });
@@ -167,7 +172,13 @@ const mapDispatchToStore = (dispatch) => {
   return {
     addToCartState: (product) => {
       dispatch(addToCartState(product))
-    }
+    },
+    addNotificationState: (notification) => {
+      dispatch(addNotificationState(notification))
+    },
+    incrementNotificationsAmount: () => {
+      dispatch(incrementNotificationsAmount())
+    },
   };
 };
 

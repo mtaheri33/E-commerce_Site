@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { clearCart } from '../state/actions';
+import { clearCart, addNotificationState, incrementNotificationsAmount } from '../state/actions';
 const axios = require('axios');
 const constants = require('../../../constants');
 
@@ -55,10 +55,16 @@ const Checkout = function (props) {
     });
     const headers = { headers: { 'content-type': 'application/json' } };
     axios.post(constants.serverDomain + '/orders', data, headers)
-      .then(() => {
-        // The request was successful, and the product was created.
+      .then((result) => {
+        // The request was successful, and the order was created.
         // This clears the state cart.
         props.clearCart();
+        // This adds a notification about the order.
+        props.addNotificationState({
+          value: 'You successfully checked out',
+          link: `/orders/${result.data._id.toString()}`,
+        });
+        props.incrementNotificationsAmount();
         navigate('/orders');
       })
       .catch(() => {
@@ -116,7 +122,13 @@ const mapDispatchToStore = (dispatch) => {
   return {
     clearCart: () => {
       dispatch(clearCart())
-    }
+    },
+    addNotificationState: (notification) => {
+      dispatch(addNotificationState(notification))
+    },
+    incrementNotificationsAmount: () => {
+      dispatch(incrementNotificationsAmount())
+    },
   };
 };
 

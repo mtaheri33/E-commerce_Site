@@ -38,8 +38,7 @@ const SignUp = function () {
     <>
       <h1 className='text-center text-primary fw-bold'>Sign Up</h1>
       <div className='container'>
-        <div className='row'>
-          <div className='col'></div>
+        <div className='row justify-content-center'>
           <div className='col-5'>
             <form onSubmit={createUser}>
               <div className='mb-3'>
@@ -53,7 +52,6 @@ const SignUp = function () {
               <button className='btn btn-primary'>Submit</button>
             </form>
           </div>
-          <div className='col'></div>
         </div>
       </div>
     </>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setState } from '../state/actions';
+import { setState, resetNotificationsAmount } from '../state/actions';
 
 const Header = function (props) {
   const username = props.State.username;
+  const notificationsAmount = props.State.notificationsAmount;
   const navigate = useNavigate();
 
   // This sets all of the states to null when a user signs out.
@@ -14,8 +15,17 @@ const Header = function (props) {
       userId: null,
       username: null,
       cart: null,
+      notifications: null,
+      notificationsAmount: null,
     });
     navigate('/');
+  };
+
+  // This redirects the user to the notifications page and resets the notifications amount.
+  const navToNotifications = function (event) {
+    event.preventDefault();
+    props.resetNotificationsAmount();
+    navigate('/notifications');
   };
 
   return (
@@ -34,7 +44,10 @@ const Header = function (props) {
               <NavLink className='nav-link text-light fw-bold' to='/products'>Products</NavLink>
             </div>
             <div className='ms-auto'>
-              <span className='text-light pe-3'>{username}</span>
+              <span className='text-light me-3'>{username}</span>
+              <button type='button' className='btn btn-light me-3' onClick={navToNotifications}>
+                Notifications <span className='badge text-bg-primary'>{notificationsAmount}</span>
+              </button>
               <button type='button' className='btn btn-light' onClick={signOut}>Sign out</button>
             </div>
           </div>
@@ -48,7 +61,10 @@ const mapDispatchToStore = (dispatch) => {
   return {
     setState: (user) => {
       dispatch(setState(user))
-    }
+    },
+    resetNotificationsAmount: () => {
+      dispatch(resetNotificationsAmount())
+    },
   };
 };
 

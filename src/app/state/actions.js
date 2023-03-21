@@ -28,3 +28,32 @@ export const clearCart = () => {
     });
   };
 };
+
+// This takes in an object with properties and link.  It adds this to
+// the notifications state.
+export const addNotificationState = (notification) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'add notification',
+      payload: notification
+    });
+  };
+};
+
+// This increments the notifications amount.
+export const incrementNotificationsAmount = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'increment notifications amount'
+    });
+  };
+};
+
+// This resets the notifications amount.
+export const resetNotificationsAmount = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'reset notifications amount'
+    });
+  };
+};

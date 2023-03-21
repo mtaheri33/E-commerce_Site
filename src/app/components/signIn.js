@@ -29,7 +29,11 @@ const SignIn = function (props) {
         props.setState({
           userId: result.data._id.toString(),
           username: result.data.username,
-          cart: result.data.cart
+          cart: result.data.cart,
+          notifications: [
+            { value: 'Visit the marketplace and browse products', link: '/marketplace' },
+          ],
+          notificationsAmount: 1,
         });
         navigate('/marketplace');
       })
@@ -49,8 +53,7 @@ const SignIn = function (props) {
     <>
       <h1 className='text-center text-primary fw-bold'>Sign In</h1>
       <div className='container'>
-        <div className='row'>
-          <div className='col'></div>
+        <div className='row justify-content-center'>
           <div className='col-5'>
             <form onSubmit={signIn}>
               <div className='mb-3'>
@@ -64,7 +67,6 @@ const SignIn = function (props) {
               <button className='btn btn-primary'>Sign in</button>
             </form>
           </div>
-          <div className='col'></div>
         </div>
       </div>
     </>

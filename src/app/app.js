@@ -13,6 +13,7 @@ import Orders from './components/orders';
 import Order from './components/order';
 import Products from './components/products';
 import Product from './components/product';
+import Notifications from './components/notifications';
 import NotFound from './components/notFound';
 
 class App extends Component {
@@ -35,6 +36,7 @@ class App extends Component {
           <Route path='/orders/:orderId' element={<Order />} />
           <Route path='/products' element={<Products />} />
           <Route path='/products/:productId' element={<Product />} />
+          <Route path='/notifications' element={<Notifications />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
