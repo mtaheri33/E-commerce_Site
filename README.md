@@ -9,5 +9,6 @@ It includes basic features to:
 - View order history and reorder
 - Add new products
 - Rate products
+- Display notifications
 
 It does not include data validation.
